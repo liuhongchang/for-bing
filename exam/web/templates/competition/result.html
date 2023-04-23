@@ -1,0 +1,75 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %}答题结果{% endblock %}
+{% block content %}
+    <div class="main-content container">
+        <div class="position toInWhere">
+            <b>当前位置：</b><span>
+                <a onclick="canNav(2,0);">问卷结果</a>
+            </span>&nbsp;&gt;&nbsp;<span>成绩单</span>
+        </div>
+        <div class="inner-content">
+            <div class="xxdj-report border zycs_text">
+                <div class="course-report">
+                    <h1>{{kind_info.kind_name}}</h1>
+                    <div class="wid775 div-course">
+                        <h2 class="test-mb40">
+                            <span id="username">{{ request.session.username }}</span>
+                            同学的成绩单
+                        </h2>
+                        <ul class="list-group">
+                            {% if rank <= 3 %}
+                                <li class="list-group-item list-group-item-success">得分: <b>{{ qa_info.score }}</b> 分</li>
+                                <li class="list-group-item list-group-item-success">耗时: <b>{{ qa_info.time }}</b> s</li>
+                                <li class="list-group-item list-group-item-success">答对题数: <b>{{ qa_info.correct_num }}</b></li>
+                                <li class="list-group-item list-group-item-success">答错题数: <b>{{ qa_info.incorrect_num }}</b></li>
+                                <li class="list-group-item list-group-item-success">
+                                    当前排名: 第 <b style="color: red;font-size: 20px;">{{ rank }}</b> 名
+                                    <h4 style="color:gray;font-size: 20px;text-align: center;">你的信息素养强于绝大部分人！
+                                        我们建议你继续保持，同时我们也有一些小小的建议：
+- 基于良好的信息素养，灵活选择信息工具，解决日常学习和工作中的问题。
+- 借助专业的信息工具发现人眼、人脑无法洞察的现象；通过工具整合、数据重构、证据搜集，最终用于创新。
+- 在学习和生活中，积极利用丰富的数字化资源、广泛的数字化工具和泛在的数字化平台，开展探索和创新。
+- 在数字环境中，保持对国家的热爱、对法律的敬畏、对民族文化的认同、对科学的追求和热爱，主动维护国家安全和民族尊严，在各种数字场景中不伤害他人和社会，积极维护数字经济的健康发展秩序和生态。
+- 在数字生活实践中反思数字技术对人的认知与行为的影响，学会自我调适、适度节制，让自己掌握信息获取和遨游数字世界的主动权，而不是被碎片信息所淹没，甚至沉溺于数字娱乐不能自拔。</h4>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item list-group-item-danger">得分: <b>{{ qa_info.score }}</b> 分</li>
+                                <li class="list-group-item list-group-item-danger">耗时: <b>{{ qa_info.time }}</b> s</li>
+                                <li class="list-group-item list-group-item-danger">答对题数: <b>{{ qa_info.correct_num }}</b></li>
+                                <li class="list-group-item list-group-item-danger">答错题数: <b>{{ qa_info.incorrect_num }}</b></li>
+                                <li id="currentRank" class="list-group-item list-group-item-danger">
+                                    当前排名: 第 <b style="color: red;font-size: 20px;">{{ rank }}</b> 名
+                                    <h4 style="color:gray;font-size: 20px;text-align: center;">你的信息素养相较他人比较一般，我们建议你重视自身信息素养的培养！希望你在以下方面努力！
+                                    - 明确自己需要解决的问题或了解的对象，有针对性地搜索和获取相关的信息。
+- 培养自己的信息生成能力，能够对信息内容进行深层加工，对信息进行科学分类、标引、排序、存储等，能够对信息去伪存真，去芜存精，正确评价、消化信息，同时通过调查分析，独立思考，最终创造出新的有效信息。
+- 培养自己的计算思维，能够运用各种系统和工具，利用一定的方法和技巧，快速地找到并获取所需的信息，能够对找到的信息进行评价、分析、整合和应用，解决实际问题。
+- 培养自己的信息伦理意识，遵守相关的法律法规和道德规范，尊重知识产权和个人隐私，正确地使用和传播信息，避免造成不良的社会影响。</h4>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="center-p">
+                         <li id="goBack" class="btn btn-primary" style="margin-top: 36px;">回首页</li>
+                         <li id="tryAgain" class="btn btn-primary" style="margin: 36px 30px 0 30px">再试试</li>
+                         <li id="goRank" class="btn btn-success" style="margin-top: 36px; ">查看排行榜</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+      $('#goRank').click(function () {
+          window.location.href = '/bs/rank?uid={{ request.session.uid }}&kind_id={{ kind_info.kind_id }}';
+      });
+      $('#tryAgain').click(function () {
+          window.location.href = '/bs?uid={{ request.session.uid }}&kind_id={{ kind_info.kind_id }}';
+      });
+      $('#goHome').click(function () {
+          window.location.href = '/index{% if request.session.uid %}?uid={{ request.session.uid }}{% else %}{% endif %}';
+      });
+      $('#goBack').click(function () {
+          window.location.href = '/index{% if request.session.uid %}?uid={{ request.session.uid }}{% else %}{% endif %}';
+      })
+    </script>
+{% endblock %}
